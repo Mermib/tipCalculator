@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Tip Calculator</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+        <style>
+            * {
+                box-sizing: border-box;
+                margin: 0;
+                padding:0;
+            }
+
+            :root {
+                --strongCyan: hsl(172, 67%, 45%);
+                --primaryFont:'Space Mono', monospace;
+                --veryDarkCyan: hsl(183, 100%, 15%);
+                --darkGrayishCyan: hsl(186, 14%, 43%);
+                --darkGrayishCyan2: hsl(184, 14%, 56%);
+                --lightGrayishCyan: hsl(185, 41%, 84%);
+                --lightGrayishCyan2: hsl(189, 41%, 97%);
+                --white: hsl(0, 0%, 100%);
+            }
+
+            body {
+                background: var(--lightGrayishCyan);
+                font-family: var(--primaryFont);
+                font-size: 24px;
+            }
+
+            h1 {
+                font-family: var(--primaryFont);
+                color: var(--veryDarkCyan);
+                letter-spacing: 10px;
+                text-align: center;
+                text-transform: uppercase;
+                font-size: 24px;
+                margin: 15px 0 0;
+            }
+
+            h2 {
+              color: var(--darkGrayishCyan);  
+              font-size: 15px;
+              margin: 5px 0;
+            }
+
+            .calculator {
+                background: var(--white);
+                margin: 5%;
+                border-radius: 15px;
+                padding: 15px;
+            }            
+
+            .calculator__total {
+                background: var(--veryDarkCyan);
+                border-radius: 15px;
+                padding: 30px 20px;
+                margin: 15px 0 0;
+            }
+
+            .calculator__text__info {
+                background: var(--lightGrayishCyan2);
+                border: 2px solid transparent;
+                padding: 3px 11px;
+                border-radius: 5px;
+                color: var(--veryDarkCyan);
+                font-family: var(--primaryFont);
+                width: 100%;
+                height: 40px;
+                text-align: right;
+                font-size: 22px;
+                font-weight: 600;
+            }
+
+            .calculator__text__info:hover, .calculator__text__info:focus {
+                border: 2px solid  var(--strongCyan);
+                outline-color: var(--strongCyan);
+            }
+
+            .calculator__text__info.custom {
+                width: 47%;
+                text-align: center;
+                font-size: 15px;
+                color: var(--darkGrayishCyan2);
+            }
+            
+           
+            .calculator__tip__info .tip {
+                background: var(--veryDarkCyan);
+                color: var(--white);
+                border-radius: 5px;
+                border: 0;
+                padding: 5px 15px;
+                font-size: 20px;
+                font-family: var(--primaryFont);
+                width: 47%;
+                height: 40px;
+                margin: 5px 0;
+                font-weight: 600;
+            }
+            .calculator__tip__info .tip:hover {
+                background: var(--strongCyan);
+                color: var(--veryDarkCyan);
+                cursor: pointer;
+            }
+
+            .calculator__total p {
+                font-size: 15px;
+                font-family: var(--primaryFont);
+                color: var(--white);
+            }
+
+            .calculator__total p span {
+                color: var(--darkGrayishCyan2);
+                font-size: 12px;
+            }
+
+            .calculator__total .total {
+                font-family: var(--primaryFont);
+                color: var(--strongCyan);
+                font-size: 24px;
+                font-weight: 600;
+                background: none;
+                border: 0;
+                width: 30%;
+                outline: 0;
+                text-align: right;
+            }
+
+            .calculator__amount__total {
+                display: flex;
+                justify-content: space-between;
+                margin: 0 0 15px 0;
+            }
+
+            .calculator__total__button {
+                background: var(--darkGrayishCyan);
+                color: var(--veryDarkCyan);
+                border: 2px solid transparent;
+                padding: 5px 10px;
+                border-radius: 5px;
+                width: 100%;
+                text-transform: uppercase;
+                font-weight: 600;
+                font-size: 24px;
+                font-family: var(--primaryFont);
+                margin: 20px 0 0;
+                cursor: pointer
+                
+                ;
+            }
+
+            .calculator__total__button:hover,  .calculator__total__button.active {
+                background: var(--strongCyan);
+                color: var(--veryDarkCyan);
+            }
+
+            .error {
+                border: 1px solid red;
+            }
+
+            .error-text {
+                font-size: 12px;
+                font-family: var(--primaryFont);
+                color: red;
+                text-align: right;
+                display: none;
+            }
+
+            @media screen and (min-width:768px)  {
+                .calculator {
+                    display: flex;
+                    justify-content: space-around;
+                }
+
+                .calculator>div {
+                    width: 47%;
+                }
+                .calculator__tip__info .tip, .calculator__text__info.custom {
+                    width: 30%;
+                }
+
+                .calculator__total {
+                    position: relative;
+                }
+
+                .calculator__total__button {
+                    position: absolute;
+                    bottom: 25px;
+                    left: 15px;
+                    width: 93%;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Tip Calculator</h1>
+        <form id="myForm">
+            <section class="calculator">
+                <div class="calculator__info">                
+                    <div class="calculator__bill__info">
+                        <h2>Bill</h2>
+                        <input type="text" id="bill_amount" class="calculator__text__info clearData" placeholder="0">
+                        <p class="error-text">Can't be zero</p>
+                    </div>
+                    <h2>Selected Tip %</h2>
+                    <div class="calculator__tip__info">
+                        <input type="button" value="5" placeholder="5%" class="tip" id="tip_cinco" />
+                        <input type="button" value="10" placeholder="10%" class="tip" id="tip_diez" />
+                        <input type="button" value="15" class="tip" id="tip_quince" />
+                        <input type="button" value="25" class="tip" id="tip_veinticinco" />
+                        <input type="button" value="50" class="tip" id="tip_cincuenta" />
+                        <!-- <input type="text" class="calculator__text__info custom clearData" value="Custom" id="tip_custom" onfocus="this.value=''"> -->
+                    </div>
+                    <div class="calculator__people__info">
+                        <h2>Number of People</h2>
+                        <input type="text" id="number_of_people" class="calculator__text__info clearData" placeholder="0" >
+                        <p class="error-text">Can't be zero</p>
+                    </div>
+                </div>
+                <div class="calculator__total">
+                    <div class="calculator__amount__total">
+                        <p>Tip Amount <br><span> / person </span></p>
+                        <input type="text" readonly class="total  input-data" id="totalTipPerson" value="$0.00"/>
+                    </div>
+                    <div class="calculator__amount__total">
+                        <p>Total <br><span> / person </span></p>
+                        <input type="text" readonly class="total  input-data" id="totalPerson" value="$0.00"/>
+                    </div>
+                    <input type="reset" class="calculator__total__button" value="Reset" onclick="clearData()" />
+                </div>
+            </section>
+        </form>
+
+        <script>   
+        
+        function clearData() {
+            document.getElementById("myForm").reset()            
+        }
+        
+            let tipAmount = document.querySelectorAll('.tip')
+
+            const valorDeTip = function (e) {
+                
+                let billAmountInput = document.getElementById('bill_amount');
+                let billAmount = parseFloat(document.getElementById('bill_amount').value);
+                let currentTip = parseInt(this.value);
+                let numberOfPeopleInput = document.getElementById('number_of_people');
+                let numberOfPeople = parseInt(document.getElementById('number_of_people').value);
+                let totalTipPerson = document.getElementById('totalTipPerson');
+                let totalPerson = document.getElementById('totalPerson');
+
+                if (billAmountInput.value != 0 && billAmount.value != "")  {
+                    if (numberOfPeopleInput.value !=0 && numberOfPeopleInput.value != "") {
+                        let tipTotal = (billAmount * (currentTip/100)) ;
+                        let tipTotalPerson = tipTotal / numberOfPeople;
+
+                        console.log(tipTotalPerson);
+                        console.log(parseFloat((billAmount/numberOfPeople) + tipTotalPerson));
+
+                        totalTipPerson.value = '$' + tipTotalPerson;
+                        totalPerson.value = '$' + parseFloat((billAmount/numberOfPeople) + tipTotalPerson);
+
+                        document.querySelector('.calculator__people__info .error-text').style.display = 'none';
+                        numberOfPeopleInput.classList.remove('error')
+
+                    } else {
+                        numberOfPeopleInput.classList.add('error')
+                        document.querySelector('.calculator__people__info .error-text').style.display = 'block';
+                    }
+                    
+                    document.querySelector('.calculator__bill__info .error-text').style.display = 'none';
+                    billAmountInput.classList.remove('error')
+
+                } else {
+                    billAmountInput.classList.add('error')
+                    document.querySelector('.calculator__bill__info .error-text').style.display = 'block';
+                }
+
+              
+            }
+
+            tipAmount.forEach(tip => {
+                tip.addEventListener("click", valorDeTip);
+            })
+
+        </script>
+    </body>
+</html>
